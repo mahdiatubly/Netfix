@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'netfix.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # Or the appropriate database engine
+        'NAME': 'netfix_db',
+        'USER': 'mahdi',
+        'PASSWORD': '32103236',
+        'HOST': 'localhost',  # Usually 'localhost'
+        'PORT': '5432',  # Usually 5432 for PostgreSQL, 3306 for MySQL
     }
 }
 
