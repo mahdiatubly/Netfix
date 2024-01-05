@@ -1,0 +1,84 @@
+<!-- users/templates/users/home.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Most Requested Services</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+
+        header {
+            background-color: #e50914;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <!-- Netflix logo or image -->
+            <img src="/path/to/netflix_logo.png" alt="Netflix Logo" style="height: 30px; width: auto;">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/users">Home</a></li>
+                <li><a href="users/signin">SignIn</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Most Requested Services</h1>
+
+        <ul>
+            {% for service in most_requested_services %}
+                <li>{{ service.name }} - Requests: {{ service.requests_count }}</li>
+            {% endfor %}
+        </ul>
+    </main>
+
+</body>
+</html>
+
