@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'netfix.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # Or the appropriate database engine
+        "ENGINE": "django.db.backends.postgresql",  # Or the appropriate database engine
         'NAME': 'netfix_db',
         'USER': 'mahdi',
         'PASSWORD': '32103236',
