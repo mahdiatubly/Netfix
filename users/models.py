@@ -16,7 +16,7 @@ class UserBase(AbstractUser):
         related_name='custom_user_set',
         related_query_name='user',
         null=True,
-        blank=True
+        blank=True,
     )
 
     # Add unique related_name for user_permissions
@@ -28,8 +28,9 @@ class UserBase(AbstractUser):
         blank=True
     )
 
-class Customer(UserBase):
-    date_of_birth = models.DateField(null=True)
+class Customer(models.Model):
+    user = models.OneToOneField(UserBase, on_delete=models.CASCADE, primary_key=True)
+    date_of_birth = models.DateField(null=False)
 
 class Company(models.Model):
     user = models.OneToOneField(

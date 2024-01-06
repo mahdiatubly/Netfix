@@ -63,8 +63,8 @@
         </div>
         <nav>
             <ul>
-                <li><a href="/users">Home</a></li>
-                <li><a href="users/signin">SignIn</a></li>
+                <li><a href="{% url 'users:home' %}">Home</a></li>
+                <li><a href="{% url 'users:signin' %}">SignIn</a></li>
             </ul>
         </nav>
     </header>

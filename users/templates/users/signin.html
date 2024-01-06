@@ -1,18 +1,20 @@
-<!-- users/templates/users/signup.html -->
+<!-- users/templates/users/signin.html -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Sign In</title>
 
+    <!-- Include any additional styles or scripts as needed -->
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f8f8f8;
+            color: #333;
         }
 
         header {
@@ -40,7 +42,7 @@
             font-weight: bold;
         }
 
-        form {
+        main {
             max-width: 400px;
             margin: 20px auto;
             padding: 20px;
@@ -49,13 +51,20 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
+        h1 {
+            color: #e50914;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
         label {
-            display: block;
             margin-bottom: 8px;
         }
 
         input {
-            width: 100%;
             padding: 10px;
             margin-bottom: 16px;
             border: 1px solid #ccc;
@@ -71,6 +80,11 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        div {
+            margin-top: 16px;
+            color: #e50914;
+        }
     </style>
 </head>
 <body>
@@ -83,26 +97,29 @@
         <nav>
             <ul>
                 <li><a href="{% url 'users:home' %}">Home</a></li>
-                <li><a href="{% url 'users:signin' %}">Sign In</a></li>
+                <li><a href="{% url 'users:customer_signup' %}">Sign Up</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        {% if messages %}
-          <div class="alert alert-danger" role="alert">
-            {% for message in messages %}
-              {{ message }}
-            {% endfor %}
-          </div>
-        {% endif %}
+        <h1>Sign In</h1>
+        
         <form method="post" action="">
             {% csrf_token %}
             
             {{ form.as_p }}
             
-            <button type="submit">Sign Up</button>
+            <button type="submit">Sign In</button>
         </form>
+        
+        {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
     </main>
 
 </body>

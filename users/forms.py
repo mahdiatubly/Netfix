@@ -1,13 +1,15 @@
+# forms.py
 from django import forms
-from .models import Customer
+from django.contrib.auth.forms import UserCreationForm
+from django.core.validators import MinValueValidator
+from datetime import date
+from .models import UserBase
 
-class CustomerForm(forms.ModelForm):
-    password_confirmation = forms.CharField(widget=forms.PasswordInput())
+class SignupForm(UserCreationForm):
+    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
+    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), validators=[MinValueValidator(limit_value=date(1900, 1, 1))])
+    password2 = forms.CharField(widget=forms.PasswordInput(), label='Confirm Password')
 
     class Meta:
-        model = Customer
-        fields = ['email', 'password', 'password_confirmation', 'username', 'date_of_birth']
-        widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
-            'password': forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
-        }
+        model = UserBase
+        fields = ['username', 'email', 'date_of_birth', 'password1', 'password2']
