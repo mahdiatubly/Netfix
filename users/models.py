@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import Group, Permission
 
 
 
@@ -11,22 +12,8 @@ class UserBase(AbstractUser):
         super().save(*args, **kwargs)  # Call the parent's save() method
     is_company = models.BooleanField(null=False, default=False)
     # Add unique related_name for groups
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='custom_user_set',
-        related_query_name='user',
-        null=True,
-        blank=True,
-    )
-
-    # Add unique related_name for user_permissions
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='custom_user_set',
-        related_query_name='user',
-        null=True,
-        blank=True
-    )
+    groups = models.ManyToManyField(Group, related_name='custom_user_set')
+    user_permissions = models.ManyToManyField(Permission, related_name='custom_user_set')
 
 class Customer(models.Model):
     user = models.OneToOneField(UserBase, on_delete=models.CASCADE, primary_key=True)

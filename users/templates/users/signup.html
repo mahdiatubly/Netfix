@@ -1,0 +1,157 @@
+<!-- users/templates/users/signup.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Sign Up</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+
+        header {
+            background-color: #e50914;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #e50914;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .user-cat {
+            background-color: #f0f0f0; /* Slightly darker gray than before */
+            width: 100%;
+            padding: 0;
+            text-align: center;
+        }
+
+        #customer-section {
+            background-color: #f0f0f0;
+            width: 49%;
+            display: inline-block;
+            text-align: center;          
+            margin: 0;
+            margin-left: 0.5%;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            padding-top: .5%;
+            padding-bottom: .5%;
+            color: black;
+
+        }
+
+        #company-section {
+            background-color: #f0f0f0; 
+            width: 49%;
+            display: inline-block;
+            text-align: center;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            margin-right: 0.5%;
+            padding-top: .5%;
+            padding-bottom: .5%;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <!-- Netflix logo or image -->
+            <img src="/path/to/netflix_logo.png" alt="Netflix Logo" style="height: 30px; width: auto;">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'users:home' %}">Home</a></li>
+                <li><a href="{% url 'users:signin' %}">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="user_cat">
+        <a href="#" id="customer-url"><div id="customer-section">
+            Customer
+        </div></a>
+        <a href="#" id="company-url"><div id="company-section">
+            Company
+        </div></a>
+    </div>
+
+    <main>
+        {% if messages %}
+          <div class="alert alert-danger" role="alert">
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="post" action="">
+            {% csrf_token %}
+            
+            {{ form.as_p }}
+            
+            <button type="submit">Sign Up</button>
+        </form>
+    </main>
+
+    {% load static %}
+    <script src="{% static 'netfix/js/signup.js' %}"></script>
+
+</body>
+
+</html>

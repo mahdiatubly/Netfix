@@ -1,12 +1,6 @@
-<!-- users/templates/users/home.html -->
-
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'users/base.html' %}
+{% block content %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Most Requested Services</title>
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -55,20 +49,6 @@
     </style>
 </head>
 <body>
-
-    <header>
-        <div>
-            <!-- Netflix logo or image -->
-            <img src="/path/to/netflix_logo.png" alt="Netflix Logo" style="height: 30px; width: auto;">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="{% url 'users:home' %}">Home</a></li>
-                <li><a href="{% url 'users:signin' %}">SignIn</a></li>
-            </ul>
-        </nav>
-    </header>
-
     <main>
         <h1>Most Requested Services</h1>
 
@@ -80,5 +60,5 @@
     </main>
 
 </body>
-</html>
+{% endblock %}
 

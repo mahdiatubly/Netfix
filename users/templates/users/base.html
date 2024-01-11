@@ -1,0 +1,76 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <style>
+            /* Add any custom styles here */
+            header {
+                background-color: #000; /* Set your desired background color */
+                padding: 10px 0;
+            }
+    
+            nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+            }
+    
+            nav li {
+                margin-right: 15px;
+            }
+    
+            nav a {
+                text-decoration: none;
+                color: #fff; /* Set your desired text color */
+            }
+    
+            nav a:hover {
+                color: #ccc; /* Set your desired text color on hover */
+            }
+        </style>
+    </head>
+<body>
+    {% if user.is_authenticated %}
+        {% if user.is_company %}
+            {% include 'partials/customer_navbar.html' %}
+        {% elif user.is_company %}
+            {% include 'partials/company_navbar.html' %}
+        {% endif %}
+    {% else %}
+    <header>
+        <div>
+            <a href="{% url 'users:home' %}">
+                <img src="/path/to/netflix_logo.png" alt="Netflix Logo" style="height: 30px; width: auto;">
+            </a>
+        </div>
+        <nav class="navbar navbar-expand-lg">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:signin' %}">SignIn</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:customer_signup' %}">SignUp</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Explore
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">All Services</a>
+                        <a class="dropdown-item" href="#">Service Providers</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    {% endif %}
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

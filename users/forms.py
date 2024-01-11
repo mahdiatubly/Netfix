@@ -13,3 +13,29 @@ class SignupForm(UserCreationForm):
     class Meta:
         model = UserBase
         fields = ['username', 'email', 'date_of_birth', 'password1', 'password2']
+
+class CompanySignupForm(UserCreationForm):
+    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
+    field = forms.ChoiceField(choices=(('Air Conditioner', 'Air Conditioner'),
+                                                     ('All in One', 'All in One'),
+                                                     ('Carpentry', 'Carpentry'),
+                                                     ('Electricity',
+                                                      'Electricity'),
+                                                     ('Gardening', 'Gardening'),
+                                                     ('Home Machines',
+                                                      'Home Machines'),
+                                                     ('House Keeping',
+                                                      'House Keeping'),
+                                                     ('Interior Design',
+                                                      'Interior Design'),
+                                                     ('Locks', 'Locks'),
+                                                     ('Painting', 'Painting'),
+                                                     ('Plumbing', 'Plumbing'),
+                                                     ('Water Heaters', 'Water Heaters')), widget=forms.Select(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(widget=forms.PasswordInput(), label='Confirm Password')
+    username = forms.CharField(label="Company Name")
+    
+
+    class Meta:
+        model = UserBase
+        fields = ['username', 'email', 'field', 'password1', 'password2']
