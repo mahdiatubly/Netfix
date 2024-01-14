@@ -12,8 +12,8 @@ class UserBase(AbstractUser):
         super().save(*args, **kwargs)  # Call the parent's save() method
     is_company = models.BooleanField(null=False, default=False)
     # Add unique related_name for groups
-    groups = models.ManyToManyField(Group, related_name='custom_user_set')
-    user_permissions = models.ManyToManyField(Permission, related_name='custom_user_set')
+    groups = models.ManyToManyField(Group, related_name='custom_user_set', null=True, blank=True)
+    user_permissions = models.ManyToManyField(Permission, related_name='custom_user_set', null=True, blank=True)
 
 class Customer(models.Model):
     user = models.OneToOneField(UserBase, on_delete=models.CASCADE, primary_key=True)

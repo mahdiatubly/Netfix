@@ -1,12 +1,8 @@
-<!-- users/templates/users/signup.html -->
+{% extends 'users/base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <title>Sign Up</title>
+{% block title %}SignUp{% endblock %}
+
+{% block content %}
 
     <style>
         body {
@@ -108,21 +104,7 @@
             color: black;
         }
     </style>
-</head>
 <body>
-
-    <header>
-        <div>
-            <!-- Netflix logo or image -->
-            <img src="/path/to/netflix_logo.png" alt="Netflix Logo" style="height: 30px; width: auto;">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="{% url 'users:home' %}">Home</a></li>
-                <li><a href="{% url 'users:signin' %}">Sign In</a></li>
-            </ul>
-        </nav>
-    </header>
     <div class="user_cat">
         <a href="#" id="customer-url"><div id="customer-section">
             Customer
@@ -154,4 +136,4 @@
 
 </body>
 
-</html>
+{% endblock %}
