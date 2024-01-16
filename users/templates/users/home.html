@@ -2,6 +2,13 @@
 {% block content %}
 <head>
     <style>
+        .box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -36,6 +43,7 @@
 
         h1 {
             color: #333;
+            text-align: center;
         }
 
         ul {
@@ -53,10 +61,126 @@
         <h1>Most Requested Services</h1>
 
         <ul>
+            <h3> Air Conditioner Services </h3>
             {% for service in most_requested_services %}
-                <li>{{ service.name }} - Requests: {{ service.requests_count }}</li>
+                {% if service.field == 'Air Conditioner' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}: {{service.company.field}}      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
             {% endfor %}
         </ul>
+
+        <ul>
+            <h3> Carpentry Services </h3>
+            {% for service in most_requested_services %}
+                {% if service.field == 'Carpentry' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <ul>
+            <h3> Electricity Services </h3>
+            {% for service in most_requested_services %}
+                {% if service.field == 'Electricity' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <ul>
+            <h3> Gardening Services </h3>
+            {% for service in most_requested_services %}
+                {% if service.field == 'Gardening' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <ul>
+            <h3> Home Machines Services </h3>
+            {% for service in most_requested_services %}
+                {% if service.field == 'Home Machines' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <ul>
+            <h3> House Keeping Services </h3>
+            {% for service in most_requested_services %}
+                {% if service.field == 'House Keeping' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <ul>
+            <h3> Interior Design Services </h3>
+            {% for service in most_requested_services %}
+                {% if service.field == 'Interior Design' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}:    {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <ul>
+            <h3> Locks Services </h3>
+            {% for service in most_requested_services %}
+                {% if service.field == 'Locks' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <ul>
+            <h3> Painting Services </h3>
+            {% for service in most_requested_services %}
+                {% if service.field == 'Painting' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <ul>
+            <h3> Plumbing Services </h3>
+            {% for service in most_requested_services %}
+                {% if service.field == 'Plumbing' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <ul>
+            <h3> Water Heaters Services </h3>
+            {% for service in most_requested_services %}
+                {% if service.field == 'Water Heaters' %}
+                    <div>
+                        <li class="box"> {{service.company.user.username}}:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        
     </main>
 
 </body>

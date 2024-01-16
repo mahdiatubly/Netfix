@@ -9,14 +9,26 @@ from .forms import SignupForm, CompanySignupForm
 from datetime import datetime, timedelta
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
+from django.db.models import OuterRef, Subquery
 
 class Home(generic.ListView):
     template_name = "users/home.html"
     context_object_name = "most_requested_services"
 
     def get_queryset(self):
-        """Return the last five published questions."""
-        return Service.objects.order_by("requests_count")[:5]
+        # Subquery to get the top 3 services for each field
+        subquery = (
+            Service.objects
+            .filter(field=OuterRef('field'))
+            .order_by('-requests_count')
+            .values('name')[:3]
+        )
+
+        # Main queryset to retrieve the actual Service instances using the subquery
+        queryset = Service.objects.filter(name__in=Subquery(subquery)).order_by('field', '-requests_count')
+
+        return queryset
+    
 class SignupView(UserPassesTestMixin, CreateView):
     model = UserBase
     form_class = SignupForm

@@ -3,7 +3,7 @@ from users.models import Customer, Company, UserBase
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Service(models.Model):
-    company=models.OneToOneField(Company, on_delete=models.CASCADE)
+    company=models.ForeignKey(Company, on_delete=models.CASCADE)
     name = models.CharField(max_length=40, primary_key=True)
     description = models.TextField()
     price_hour = models.DecimalField(decimal_places=2, max_digits=100)
