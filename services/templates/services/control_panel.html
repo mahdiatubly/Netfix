@@ -8,6 +8,25 @@
 
 <style>
 
+    .taps_box {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 1%;
+        margin-right: 4%;
+        width:46%;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .taps_box_2 {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 1%;
+        width:46%;
+        text-align: center;
+        display: inline-block;
+    }
+
     .box {
         border: 1px solid #ccc;
         padding: 20px;
@@ -79,7 +98,7 @@
     }
 
     .user-cat {
-        background-color: #f0f0f0; /* Slightly darker gray than before */
+        background-color: #f0f0f0; 
         width: 100%;
         padding: 0;
         text-align: center;
@@ -115,34 +134,21 @@
 </style>
 
 <body>
-    <div class="box">
-        <div class="container">
-            <h2>Create a new service</h2>
-            <form method="post" class="service-form">
-              {% csrf_token %}
-        
-              <div class="form-group">
-                {{ form.name.label_tag }} {{ form.name }}
-              </div>
-        
-              <div class="form-group">
-                {{ form.description.label_tag }} {{ form.description }}
-              </div>
-        
-              <div class="form-group">
-                {{ form.price_hour.label_tag }} {{ form.price_hour }}
-              </div>
-        
-              {% if form.field %}
-                <div class="form-group">
-                  {{ form.field.label_tag }} {{ form.field }}
-                </div>
-              {% endif %}
-        
-              <button type="submit" class="btn btn-primary">Create Service</button>
-            </form>
-          </div>
+
+    <div class="taps_box">
+        <h2><a href="{% url 'services:create_service' %}">Create a New Service</a></h2>
     </div>
+    <div class="taps_box_2">
+        <h2><a href="{% url 'services:service_list' %}">Manage Your Services</a></h2>
+    </div>
+    <div class="box">
+        <h2>Your Services</h2>
+        {% for service in comapny_services %}
+            <p>{{ service.name }} - {{ service.description }}</p>
+        {% endfor %}
+        <a href="{% url 'services:control_panel' %}">See Full List</a>
+    </div>
+
     <div class="box">
         <h2>New Requests</h2>
         {% for request in uncompleted_requests %}
@@ -161,3 +167,8 @@
 
 </body>
 {% endblock %}
+
+
+
+
+

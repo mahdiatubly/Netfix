@@ -12,17 +12,20 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
+from django.core.exceptions import ValidationError
 
-class ControlPanelView(View):
+class ControlPanelView(LoginRequiredMixin, View):
     template_name = 'services/control_panel.html'
 
     def get_context_data(self):
         uncompleted_requests = Request.objects.filter(completed=False)[:3]
         historical_requests = Request.objects.filter(completed=True)[:3]
+        comapny_services = Service.objects.filter(company=Company.objects.get(user=self.request.user))[:3]
 
         context = {
             'uncompleted_requests': uncompleted_requests,
             'historical_requests': historical_requests,
+            'comapny_services': comapny_services,
         }
         return context
 
@@ -33,16 +36,21 @@ class ControlPanelView(View):
 class ServiceCreateView(LoginRequiredMixin, CreateView):
     model = Service
     form_class = ServiceCreateForm
-    template_name = 'services/control_panel.html'  # Replace with your actual template name
-    success_url = reverse_lazy('users:home')  # Replace with the URL you want to redirect to upon successful form submission
+    template_name = 'services/create_service.html'
+    success_url = reverse_lazy('users:home')
 
     def form_valid(self, form):
-        # Set the company based on the signed-in user
+        existing_service = Service.objects.filter(
+            name=form.cleaned_data['name'],
+            company__user=self.request.user
+        ).first()
+
+        if existing_service:
+            error_message = "A service with this name already exists."
+            return render(self.request, self.template_name, {'form': form, 'error_message': error_message})
+
         form.instance.company = Company.objects.get(user=self.request.user)
-
-        # Automatically set the company field in the Service model
         form.instance.field = Company.objects.get(user=self.request.user).field
-
         return super().form_valid(form)
 
     def get_form_kwargs(self):
@@ -60,12 +68,11 @@ class ServiceListView(LoginRequiredMixin, ListView):
     
 class ServiceDeleteView(LoginRequiredMixin, DeleteView):
     model = Service
-    template_name = 'services/service_list.html'  # Create a confirmation template
-    success_url = reverse_lazy('services:service_list')  # Redirect to company services page after successful deletion
+    template_name = 'services/service_list.html'  
+    success_url = reverse_lazy('services:service_list')  
 
     def get_object(self, queryset=None):
-        # Get the service object based on the provided name (pk) in the URL
-        service_name = self.kwargs['name']
-        return Service.objects.get(name=service_name)
+        service_id = self.kwargs['id']
+        return Service.objects.get(id=service_id)
     
 

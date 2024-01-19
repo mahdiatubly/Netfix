@@ -1,17 +1,74 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
+  <head>
+    <style>
+        .box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+
+        header {
+            background-color: #e50914;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+    </style>
+  </head>
+
   <h2>Company Services</h2>
   <ul>
     {% for service in services %}
       <li>
         {{ service.name }} - {{ service.description }} - {{ service.price_hour }}
-        <button type="button" data-toggle="modal" data-target="#confirmDeleteModal{{ service.name }}">
+        <button type="button" data-toggle="modal" data-target="#confirmDeleteModal{{ service.id }}">
           Delete
         </button>
 
         <!-- Confirmation Modal -->
-        <div class="modal fade" id="confirmDeleteModal{{ service.name }}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal fade" id="confirmDeleteModal{{ service.id }}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -25,7 +82,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form method="post" action="{% url 'services:delete_service' name=service.name %}">
+                <form method="post" action="{% url 'services:delete_service' id=service.id %}">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
