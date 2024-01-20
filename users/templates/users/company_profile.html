@@ -1,0 +1,40 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<style>
+    header {
+        background-color: #e50914;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+
+  <div class="container mt-4">
+    <h2 class="mb-4">Company Profile</h2>
+
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h4>{{ company.user.username }} - {{ company.field }}</h4>
+      </div>
+      <div class="card-body">
+        <!-- Display company details -->
+        <img src="{{ MEDIA_URL }}{{ company.logo.url }}" alt="{{ company.user.username }} Logo" class="img-fluid mb-3">
+
+        <h5>Services:</h5>
+        <ul class="list-group">
+          {% for service in services %}
+            <li class="list-group-item">{{ service.name }} - {{ service.description }} - {{ service.price_hour }}</li>
+          {% endfor %}
+        </ul>
+
+        {% if is_company_owner %}
+          <!-- Display update company info and link to services management -->
+          <a href="{% url 'services:service_list' %}" class="btn btn-primary mt-3">Update Company Info</a>
+          <a href="{% url 'services:service_list' %}" class="btn btn-success mt-3">Manage Services</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

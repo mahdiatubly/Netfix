@@ -146,7 +146,7 @@
         {% for service in comapny_services %}
             <p>{{ service.name }} - {{ service.description }}</p>
         {% endfor %}
-        <a href="{% url 'services:control_panel' %}">See Full List</a>
+        <a href="{% url 'services:service_list' %}">See Full List</a>
     </div>
 
     <div class="box">

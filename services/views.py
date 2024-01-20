@@ -8,6 +8,7 @@ from django.views.generic import CreateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ServiceCreateForm
 from django.views.generic.edit import DeleteView
+from django.views.generic.edit import UpdateView
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -49,8 +50,14 @@ class ServiceCreateView(LoginRequiredMixin, CreateView):
             error_message = "A service with this name already exists."
             return render(self.request, self.template_name, {'form': form, 'error_message': error_message})
 
-        form.instance.company = Company.objects.get(user=self.request.user)
-        form.instance.field = Company.objects.get(user=self.request.user).field
+        user_company = Company.objects.get(user=self.request.user)
+
+        if user_company.field == 'All in One':
+            form.instance.field = form.cleaned_data['field']
+        else:
+            form.instance.field = user_company.field
+
+        form.instance.company = user_company
         return super().form_valid(form)
 
     def get_form_kwargs(self):
@@ -74,5 +81,31 @@ class ServiceDeleteView(LoginRequiredMixin, DeleteView):
     def get_object(self, queryset=None):
         service_id = self.kwargs['id']
         return Service.objects.get(id=service_id)
+    
+
+class ServiceUpdateView(LoginRequiredMixin, UpdateView):
+    model = Service
+    form_class = ServiceCreateForm  
+    template_name = 'services/update_services.html'
+    success_url = reverse_lazy('services:service_list')
+
+    def get_queryset(self):
+        return Service.objects.filter(company=Company.objects.get(user=self.request.user))
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        user_company = Company.objects.get(user=self.request.user)
+
+        if user_company.field == 'All in One':
+            form.fields['field'].widget.attrs['class'] = 'form-control'
+        else:
+            form.fields.pop('field')
+
+        return form
+    
+class ServiceListView(ListView):
+    model = Service
+    template_name = 'services/all_services.html'
+    context_object_name = 'services'
     
 

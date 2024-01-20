@@ -1,0 +1,38 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<style>
+    header {
+        background-color: #e50914;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .company-card {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 10px;
+        text-align: center;
+    }
+
+    .company-link {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Service Providers</h2>
+
+    {% for company in companies %}
+    <div class="card company-card">
+        <a href="{% url 'users:public_company_profile' username=company.user.username %}" class="company-link">
+            <h4>{{ company.user.username }} - {{ company.field }}</h4>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

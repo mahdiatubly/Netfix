@@ -14,6 +14,6 @@ class ServiceCreateForm(forms.ModelForm):
             company = Company.objects.get(user=user)
             if company.field == 'All in One':
                 self.fields['field'] = forms.ChoiceField(
-                    choices=Service._meta.get_field('field').choices)
+                    choices=Service._meta.get_field('field').choices, widget=forms.Select(attrs={'class': 'form-control'}))
             else:
                 del self.fields['field']

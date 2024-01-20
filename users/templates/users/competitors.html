@@ -1,0 +1,101 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<head>
+    <style>
+        .box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+
+        header {
+            background-color: #e50914;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+  <div class="container mt-4">
+    <h2 class="mb-4">Competitors</h2>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4>Your Company:</h4>
+          </div>
+          <div class="card-body">
+            <p class="mb-0">{{ signed_in_company.user.username }} - {{ signed_in_company.field }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4>Competitor Companies:</h4>
+          </div>
+          <div class="card-body">
+            {% for competitor in competitors %}
+              <p class="mb-0"><a href="{% url 'users:public_company_profile' username=competitor.user.username%}">{{ competitor.user.username }} - {{ competitor.field }}</p></a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <h4>Competitor Services:</h4>
+      <ul class="list-group">
+        {% for service in competitor_services %}
+          <li class="list-group-item">
+            {{ service.name }} - {{ service.description }} - {{ service.price_hour }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}

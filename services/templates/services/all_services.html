@@ -1,0 +1,38 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<style>
+    header {
+        background-color: #e50914;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .service-card {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 10px;
+        text-align: center;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Service List</h2>
+
+    {% for service in services %}
+    <div class="card service-card">
+        <h4>{{ service.name }}</h4>
+        <p>{{ service.description }}</p>
+        <p>Price per Hour: ${{ service.price_hour }}</p>
+        <!-- Add other service details as needed -->
+
+        <!-- You can also include a link to the company's public profile if applicable -->
+        {% if service.company %}
+        <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">Company: {{ service.company.user.username }}</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

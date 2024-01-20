@@ -45,14 +45,14 @@
             </div>
             <nav class="navbar navbar-expand-lg">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'users:customer_signup' %}">Competetors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'users:competitors' %}">Competetors</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{user.username}}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{% url 'services:control_panel' %}">Control Panel</a>
-                            <a class="dropdown-item" href="#">Profile </a>
+                            <a class="dropdown-item" href="{% url 'users:company_profile' %}">Profile </a>
                             <form method="post" action="{% url 'users:signout' %}">
                                 {% csrf_token %}
                             <button class="dropdown-item" type="submit">SignOut</button>
@@ -71,8 +71,8 @@
             </div>
             <nav class="navbar navbar-expand-lg">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'users:signin' %}">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'users:signin' %}">Vendors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'services:all_services' %}">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'users:company_list' %}">Vendors</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{user.username}}
@@ -105,8 +105,8 @@
                         Explore
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">All Services</a>
-                        <a class="dropdown-item" href="#">Service Providers</a>
+                        <a class="dropdown-item" href="{% url 'services:all_services' %}">All Services</a>
+                        <a class="dropdown-item" href="{% url 'users:company_list' %}">Service Providers</a>
                     </div>
                 </li>
             </ul>
