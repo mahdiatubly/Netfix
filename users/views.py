@@ -71,7 +71,6 @@ class CompanySignupView(UserPassesTestMixin, CreateView):
     success_url = reverse_lazy('users:home')
 
     def test_func(self):
-        # Check if the user is not authenticated
         return not self.request.user.is_authenticated
     
     def handle_no_permission(self):

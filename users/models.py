@@ -18,7 +18,7 @@ class UserBase(AbstractUser):
 class Customer(models.Model):
     user = models.OneToOneField(UserBase, on_delete=models.CASCADE, primary_key=True)
     date_of_birth = models.DateField(null=False)
-    logo = models.ImageField(upload_to='company_logos/', default='company_logos/default_logo.webp')
+    logo = models.ImageField(upload_to='company_logos/', default='  ')
 
 
 class Company(models.Model):

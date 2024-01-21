@@ -152,7 +152,7 @@
     <div class="box">
         <h2>New Requests</h2>
         {% for request in uncompleted_requests %}
-            <p>{{ request.title }} - {{ request.description }}</p>
+            <p>{{ request.id }} - {{request.service.name}} | client:  {{ request.customer.user.username }}</p>
         {% endfor %}
         <a href="{% url 'services:control_panel' %}">See Full List</a>
     </div>

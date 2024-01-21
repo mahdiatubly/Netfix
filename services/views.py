@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .models import Service
 from django.urls import reverse_lazy
-from users.models import Company
+from users.models import Company, Customer
 from .models import Service, Request
 from django.views.generic import CreateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +13,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
+from django.utils import timezone
+from django.contrib import messages
 from django.core.exceptions import ValidationError
 
 class ControlPanelView(LoginRequiredMixin, View):
@@ -103,9 +105,48 @@ class ServiceUpdateView(LoginRequiredMixin, UpdateView):
 
         return form
     
-class ServiceListView(ListView):
+class ClientServiceListView(ListView):
     model = Service
     template_name = 'services/all_services.html'
     context_object_name = 'services'
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.is_company:
+            return redirect('users:home')
+        return super().get(request, *args, **kwargs)
+
+
+class ServiceDetailView(View):
+    template_name = 'services/service_detail.html'
+
+    def get(self, request, *args, **kwargs):
+        service_id = kwargs.get('service_id')
+        service = get_object_or_404(Service, id=service_id)
+        context = {
+            'service': service,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        service_id = kwargs.get('service_id')
+        service = get_object_or_404(Service, id=service_id)
+        if not request.user.is_authenticated:
+            messages.warning(request, 'Please sign in to request this service.')
+            return redirect('users:signin')
+        if request.user.is_company:
+            messages.warning(request, 'Company accounts cannot request services.')
+            return redirect('services:service_detail', service_id=service_id)
+        customer = get_object_or_404(Customer, user=request.user)
+        try:
+            Request.objects.create(
+                customer=customer,
+                service=service,
+                date=timezone.now()  
+            )
+            messages.success(request, 'Request submitted successfully. You will be contacted soon.')
+        except Exception as e:
+            messages.warning(request, f'Failed to submit request. Error: {str(e)}')
+
+        return redirect('services:service_detail', service_id=service_id)  
     
 

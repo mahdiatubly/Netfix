@@ -25,7 +25,7 @@
         <h5>Services:</h5>
         <ul class="list-group">
           {% for service in services %}
-            <li class="list-group-item">{{ service.name }} - {{ service.description }} - {{ service.price_hour }}</li>
+          <a href="{% url 'services:service_detail' service_id=service.id %}"><li class="list-group-item">{{ service.name }} - {{ service.description }} - {{ service.price_hour }}</li></a>
           {% endfor %}
         </ul>
 

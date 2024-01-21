@@ -26,8 +26,8 @@ class Service(models.Model):
 
 class Request(models.Model):
     id = models.AutoField(primary_key=True)
-    customer= models.OneToOneField(Customer, on_delete=models.CASCADE)
-    service = models.OneToOneField(Service, on_delete=models.CASCADE)
+    customer= models.ForeignKey(Customer, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now=True, null=False)
     completed = models.BooleanField(default=False)
     rating = models.IntegerField(validators=[MinValueValidator(

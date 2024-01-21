@@ -22,17 +22,19 @@
     <h2 class="mb-4">Service List</h2>
 
     {% for service in services %}
-    <div class="card service-card">
-        <h4>{{ service.name }}</h4>
-        <p>{{ service.description }}</p>
-        <p>Price per Hour: ${{ service.price_hour }}</p>
-        <!-- Add other service details as needed -->
+    <a href="{% url 'services:service_detail' service_id=service.id %}">
+        <div class="card service-card">
+            <h4>{{ service.name }}</h4>
+            <p>{{ service.description }}</p>
+            <p>Price per Hour: ${{ service.price_hour }}</p>
+            <!-- Add other service details as needed -->
 
-        <!-- You can also include a link to the company's public profile if applicable -->
-        {% if service.company %}
-        <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">Company: {{ service.company.user.username }}</a>
-        {% endif %}
-    </div>
+            <!-- You can also include a link to the company's public profile if applicable -->
+            {% if service.company %}
+            <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">Company: {{ service.company.user.username }}</a>
+            {% endif %}
+        </div>
+    </a>
     {% endfor %}
 </div>
 {% endblock %}
