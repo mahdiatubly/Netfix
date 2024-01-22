@@ -4,18 +4,23 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
-from services.models import Service
+from services.models import Service, Request
 from .models import Customer, Company, UserBase
-from .forms import SignupForm, CompanySignupForm
+from .forms import SignupForm, CompanySignupForm, UserProfileUpdateForm, CustomerUpdateForm
 from datetime import datetime, timedelta
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse
+from django.views.generic.edit import UpdateView
 from django.shortcuts import redirect, render
 from django.db.models import OuterRef, Subquery
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import PasswordChangeView as BasePasswordChangeView
+from django.contrib.auth.views import PasswordChangeDoneView
+
+
 
 
 class Home(generic.ListView):
@@ -172,6 +177,57 @@ class CompanyListView(ListView):
     model = Company
     template_name = 'users/company_list.html'
     context_object_name = 'companies'
+
+
+class CustomerProfileView(View):
+    template_name = 'users/customer_profile.html'
+
+    def get_context_data(self, **kwargs):
+        customer = self.request.user.customer
+        active_requests = Request.objects.filter(customer=customer, completed=False)
+        previous_requests = Request.objects.filter(customer=customer, completed=True)
+
+        context = {
+            'customer': customer,
+            'active_requests': active_requests,
+            'previous_requests': previous_requests,
+        }
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+    
+class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = UserBase
+    form_class = UserProfileUpdateForm
+    template_name = 'users/update_customer.html'
+    success_url = reverse_lazy('users:customer_profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        customer = self.object.customer
+        form.initial['date_of_birth'] = customer.date_of_birth
+        form.initial['logo'] = customer.logo  
+        form.customer_instance = customer
+        return form
+
+    def form_valid(self, form):
+        date_of_birth = form.cleaned_data['date_of_birth']
+
+        customer = form.customer_instance
+        customer.date_of_birth = date_of_birth
+        customer.save()
+
+        if 'logo' in self.request.FILES:
+            customer.logo = self.request.FILES['logo']
+            customer.save()
+
+        return super().form_valid(form)
+    
 
 
 

@@ -1,0 +1,105 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Customer Profile{% endblock %}
+
+{% block content %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+    }
+
+    header {
+      background-color: #e50914;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .container-box {
+      margin: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    a {
+      display: block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #e50914;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .box-header {
+      background-color: #e50914;
+      color: white;
+      padding: 10px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    .profile-picture img {
+      border-radius: 50%;
+      width: 150px; /* Adjust the width and height as needed */
+      height: 150px;
+      object-fit: cover; /* Maintain aspect ratio while covering the container */
+    }
+
+    .box-content {
+      padding: 20px;
+    }
+  </style>
+
+  <div class="container-box">
+    <div class="box-header">
+      <h2>{{ customer.user.username }} - Customer Profile</h2>
+    </div>
+
+    <div class="box-content">
+      <h3>Customer Information</h3>
+      <div class="profile-picture">
+          <img src="{{ MEDIA_URL }}{{ customer.logo.url }}" alt="{{ company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
+      </div>
+      <p>Username: {{ customer.user.username }}</p>
+      <p>Email: {{ customer.user.email }}</p>
+      <p>First Name: {{ customer.user.first_name }}</p>
+      <p>Last Name: {{ customer.user.last_name }}</p>
+    
+      <a href="{% url 'users:update_customer' %}" class="btn btn-primary">Update Profile</a><br><br>
+      
+
+      <h3>Active Requests</h3>
+      {% if active_requests %}
+        <ul>
+          {% for request in active_requests %}
+            <li>{{ request.service.name }} - Request Date: {{ request.date }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No active requests.</p>
+      {% endif %}
+
+      <h3>Previous Requests</h3>
+      {% if previous_requests %}
+        <ul>
+          {% for request in previous_requests %}
+            <li>{{ request.service.name }} - Request Date: {{ request.date }} - Completed: {% if request.completed %}Yes{% else %}No{% endif %}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No previous requests.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

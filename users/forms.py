@@ -3,7 +3,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import MinValueValidator
 from datetime import date
-from .models import UserBase
+from .models import UserBase, Customer
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import UserChangeForm
 
 class SignupForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
@@ -39,3 +41,26 @@ class CompanySignupForm(UserCreationForm):
     class Meta:
         model = UserBase
         fields = ['username', 'email', 'field', 'password1', 'password2']
+class UserBaseUpdateForm(UserChangeForm):
+    class Meta:
+        model = UserBase
+        fields = ['username', 'email', 'first_name', 'last_name']
+
+class CustomerUpdateForm(forms.ModelForm):
+    date_of_birth = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=False
+    )
+
+    class Meta:
+        model = Customer
+        fields = ['date_of_birth', 'logo']
+
+class UserProfileUpdateForm(UserBaseUpdateForm, CustomerUpdateForm):
+    logo = forms.ImageField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={'accept': 'image/*'})
+    )
+
+    class Meta(UserBaseUpdateForm.Meta, CustomerUpdateForm.Meta):
+        fields = UserBaseUpdateForm.Meta.fields + ['date_of_birth', 'logo']

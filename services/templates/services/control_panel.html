@@ -3,172 +3,121 @@
 {% block title %}Control Panel{% endblock %}
 
 {% block content %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-<style>
-
-    .taps_box {
-        border: 1px solid #ccc;
-        padding: 20px;
-        margin: 1%;
-        margin-right: 4%;
-        width:46%;
-        text-align: center;
-        display: inline-block;
-    }
-
-    .taps_box_2 {
-        border: 1px solid #ccc;
-        padding: 20px;
-        margin: 1%;
-        width:46%;
-        text-align: center;
-        display: inline-block;
-    }
-
-    .box {
-        border: 1px solid #ccc;
-        padding: 20px;
-        margin: 10px;
-        text-align: center;
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    label, input, textarea, button {
-        margin-bottom: 10px;
-    }
-
-    a {
-        display: block;
-        margin-top: 10px;
-    }
+  <style>
     body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f8f8f8;
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
     }
 
     header {
-        background-color: #e50914;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      background-color: #e50914;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    nav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
+    .container-box {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 20px;
+      gap: 20px;
     }
 
-    nav li {
-        margin-right: 20px;
+    .card-box {
+      flex: 1 1 300px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    label {
-        display: block;
-        margin-bottom: 8px;
+    a {
+      display: block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #e50914;
+      font-weight: bold;
     }
 
-    input {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 16px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
+    a:hover {
+      text-decoration: underline;
     }
 
-    button {
-        background-color: #e50914;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+    .box-header {
+      background-color: #e50914;
+      color: white;
+      padding: 10px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
     }
 
-    .user-cat {
-        background-color: #f0f0f0; 
-        width: 100%;
-        padding: 0;
-        text-align: center;
+    .box-content {
+      padding: 20px;
     }
+  </style>
 
-    #customer-section {
-        background-color: #f0f0f0;
-        width: 49%;
-        display: inline-block;
-        text-align: center;          
-        margin: 0;
-        margin-left: 0.5%;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-        padding-top: .5%;
-        padding-bottom: .5%;
-        color: black;
+  <body>
+    <div class="container-box">
+      <div class="card-box">
+        <div class="box-header">
+          <h2>Create a New Service</h2>
+        </div>
+        <div class="box-content">
+          <p>Create a new service for your customers.</p>
+          <a href="{% url 'services:create_service' %}" class="btn btn-primary">Create Service</a>
+        </div>
+      </div>
 
-    }
+      <div class="card-box">
+        <div class="box-header">
+          <h2>Manage Your Services</h2>
+        </div>
+        <div class="box-content">
+          <p>View and manage the services you offer.</p>
+          <a href="{% url 'services:service_list' %}" class="btn btn-success">Manage Services</a>
+        </div>
+      </div>
 
-    #company-section {
-        background-color: #f0f0f0; 
-        width: 49%;
-        display: inline-block;
-        text-align: center;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-        margin-right: 0.5%;
-        padding-top: .5%;
-        padding-bottom: .5%;
-        color: black;
-    }
-</style>
-
-<body>
-
-    <div class="taps_box">
-        <h2><a href="{% url 'services:create_service' %}">Create a New Service</a></h2>
-    </div>
-    <div class="taps_box_2">
-        <h2><a href="{% url 'services:service_list' %}">Manage Your Services</a></h2>
-    </div>
-    <div class="box">
-        <h2>Your Services</h2>
-        {% for service in comapny_services %}
+      <div class="card-box">
+        <div class="box-header">
+          <h2>Your Services</h2>
+        </div>
+        <div class="box-content">
+          {% for service in comapny_services %}
             <p>{{ service.name }} - {{ service.description }}</p>
-        {% endfor %}
-        <a href="{% url 'services:service_list' %}">See Full List</a>
-    </div>
+          {% endfor %}
+          <a href="{% url 'services:service_list' %}" class="btn btn-info">See Full List</a>
+        </div>
+      </div>
 
-    <div class="box">
-        <h2>New Requests</h2>
-        {% for request in uncompleted_requests %}
-            <p>{{ request.id }} - {{request.service.name}} | client:  {{ request.customer.user.username }}</p>
-        {% endfor %}
-        <a href="{% url 'services:control_panel' %}">See Full List</a>
-    </div>
+      <div class="card-box">
+        <div class="box-header">
+          <h2>New Requests</h2>
+        </div>
+        <div class="box-content">
+          {% for request in uncompleted_requests %}
+            <p>{{request.service.name}} - client:  {{ request.customer.user.username }}</p>
+          {% endfor %}
+          <a href="{% url 'services:company_requests' %}" class="btn btn-warning">See all requests</a>
+        </div>
+      </div>
 
-    <div class="box">
-        <h2>Request History</h2>
-        {% for request in historical_requests %}
-            <p>{{ request.title }} - {{ request.description }}</p>
-        {% endfor %}
-        <a href="{% url 'services:control_panel' %}">See Full History</a>
+      <div class="card-box">
+        <div class="box-header">
+          <h2>Request History</h2>
+        </div>
+        <div class="box-content">
+          {% for request in historical_requests %}
+            <p>{{request.service.name}} - client:  {{ request.customer.user.username }}</p>
+          {% endfor %}
+          <a href="{% url 'services:company_requests' %}" class="btn btn-secondary">See all requests</a>
+        </div>
+      </div>
     </div>
-
-</body>
+  </body>
 {% endblock %}
-
-
-
-
-

@@ -1,0 +1,41 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>Company Service Requests</h2>
+
+    {% if requests %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for request in requests %}
+            <tr>
+              <td>{{ request.service.name }}</td>
+              <td>{{ request.customer.user.username }}</td>
+              <td>{{ request.date }}</td>
+              <td>{% if request.completed %}Completed{% else %}Pending{% endif %}</td>
+              <td>
+                {% if not request.completed %}
+                  <form method="post" action="{% url 'services:mark_request_completed' pk=request.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Mark as Completed</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No service requests found.</p>
+    {% endif %}
+  </div>
+{% endblock %}

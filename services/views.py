@@ -21,8 +21,8 @@ class ControlPanelView(LoginRequiredMixin, View):
     template_name = 'services/control_panel.html'
 
     def get_context_data(self):
-        uncompleted_requests = Request.objects.filter(completed=False)[:3]
-        historical_requests = Request.objects.filter(completed=True)[:3]
+        uncompleted_requests = Request.objects.filter(service__company__user=self.request.user, completed=False)
+        historical_requests = Request.objects.filter(service__company__user=self.request.user, completed=True)
         comapny_services = Service.objects.filter(company=Company.objects.get(user=self.request.user))[:3]
 
         context = {
@@ -146,7 +146,54 @@ class ServiceDetailView(View):
             messages.success(request, 'Request submitted successfully. You will be contacted soon.')
         except Exception as e:
             messages.warning(request, f'Failed to submit request. Error: {str(e)}')
+        return redirect('services:service_detail', service_id=service_id)
 
-        return redirect('services:service_detail', service_id=service_id)  
+
+class CompanyRequestsView(View):
+    template_name = 'services/company_requests.html'
+
+    def get_context_data(self, **kwargs):
+        company_services = Service.objects.filter(company__user=self.request.user)
+        requests = Request.objects.filter(service__in=company_services).order_by('-date')
+
+        context = {
+            'requests': requests,
+        }
+        return context
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_company:
+            # Redirect or handle unauthorized access as needed
+            return render(request, 'users/unauthorized_access.html')
+
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
     
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_company:
+            return render(request, 'users/unauthorized_access.html')
+
+        request_id = kwargs.get('pk')
+        if request_id:
+            request_instance = Request.objects.filter(pk=request_id, service__company__user=request.user).first()
+            if request_instance and not request_instance.completed:
+                request_instance.completed = True
+                request_instance.save()
+
+        return redirect('services:company_requests') 
+    
+
+class MarkRequestCompletedView(View):
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_company:
+            return render(request, 'users/unauthorized_access.html')
+
+        request_id = kwargs.get('pk')
+        if request_id:
+            request_instance = Request.objects.filter(pk=request_id, service__company__user=request.user).first()
+            if request_instance and not request_instance.completed:
+                request_instance.completed = True
+                request_instance.save()
+
+        return redirect('services:company_requests')
 
