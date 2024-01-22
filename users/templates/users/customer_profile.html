@@ -3,7 +3,14 @@
 {% block title %}Customer Profile{% endblock %}
 
 {% block content %}
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  
+  <head>
+    <!-- Include RateYo library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+  </head>
 
   <style>
     body {
@@ -51,14 +58,35 @@
 
     .profile-picture img {
       border-radius: 50%;
-      width: 150px; /* Adjust the width and height as needed */
+      width: 150px; 
       height: 150px;
-      object-fit: cover; /* Maintain aspect ratio while covering the container */
+      object-fit: cover;
     }
 
     .box-content {
       padding: 20px;
     }
+
+    /* Rating Stars */
+    .rating-stars input {
+      display: none;
+    }
+
+    .rating-stars label {
+      display: inline-block;
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    .rating-stars label:before {
+      content: '★';
+      margin: 0.2em;
+    }
+
+    .rating-stars input:checked ~ label:before {
+      color: gold;
+    }
+
   </style>
 
   <div class="container-box">
@@ -83,7 +111,12 @@
       {% if active_requests %}
         <ul>
           {% for request in active_requests %}
-            <li>{{ request.service.name }} - Request Date: {{ request.date }}</li>
+            <li>{{ request.service.name }} - Request Date: {{ request.date }}
+              <form method="post" action="{% url 'services:mark_request_completed' pk=request.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Mark as Completed</button>
+              </form>
+            </li>
           {% endfor %}
         </ul>
       {% else %}
@@ -94,7 +127,11 @@
       {% if previous_requests %}
         <ul>
           {% for request in previous_requests %}
-            <li>{{ request.service.name }} - Request Date: {{ request.date }} - Completed: {% if request.completed %}Yes{% else %}No{% endif %}</li>
+            <li>{{ request.service.name }} - Request Date: {{ request.date }} - Completed: {% if request.completed %}Yes{% else %}No{% endif %}
+              {% if request.completed and request.rating is None %}
+                <a href="{% url 'users:rate_service' pk=request.pk %}" class="btn btn-warning">Rate Service</a>
+              {% endif %}
+            </li>
           {% endfor %}
         </ul>
       {% else %}

@@ -185,7 +185,7 @@ class CompanyRequestsView(View):
 
 class MarkRequestCompletedView(View):
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not request.user.is_company:
+        if not request.user.is_authenticated:
             return render(request, 'users/unauthorized_access.html')
 
         request_id = kwargs.get('pk')
@@ -194,6 +194,12 @@ class MarkRequestCompletedView(View):
             if request_instance and not request_instance.completed:
                 request_instance.completed = True
                 request_instance.save()
-
+            
+            request_instance = Request.objects.filter(pk=request_id, customer__user=request.user).first()
+            if request_instance and not request_instance.completed:
+                request_instance.completed = True
+                request_instance.save()
+        if not request.user.is_company:
+             return redirect('users:customer_profile')
         return redirect('services:company_requests')
 

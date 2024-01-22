@@ -3,10 +3,11 @@ from django.views.generic import ListView
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView
+from django.http import JsonResponse
 from django.contrib import messages
 from services.models import Service, Request
 from .models import Customer, Company, UserBase
-from .forms import SignupForm, CompanySignupForm, UserProfileUpdateForm, CustomerUpdateForm
+from .forms import SignupForm, CompanySignupForm, UserProfileUpdateForm, CustomerUpdateForm, RatingForm
 from datetime import datetime, timedelta
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse
@@ -227,6 +228,25 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
             customer.save()
 
         return super().form_valid(form)
+    
+class RateServiceView(View):
+    template_name = 'users/rate_service.html'
+
+    def get(self, request, *args, **kwargs):
+        request_id = self.kwargs.get('pk')
+        request_instance = Request.objects.get(pk=request_id)
+        form = RatingForm(instance=request_instance)
+        return render(request, self.template_name, {'form': form, 'request_instance': request_instance})
+
+    def post(self, request, *args, **kwargs):
+        request_id = self.kwargs.get('pk')
+        request_instance = Request.objects.get(pk=request_id)
+        form = RatingForm(request.POST, instance=request_instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Rating submitted successfully!')
+            return redirect('users:customer_profile')
+        return render(request, self.template_name, {'form': form, 'request_instance': request_instance})
     
 
 

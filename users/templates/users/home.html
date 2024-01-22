@@ -65,7 +65,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'Air Conditioner' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>: {{service.company.field}}      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>: {{service.company.field}}      {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -76,7 +76,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'Carpentry' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -87,7 +87,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'Electricity' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -98,7 +98,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'Gardening' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -109,7 +109,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'Home Machines' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -120,7 +120,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'House Keeping' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -131,7 +131,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'Interior Design' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:    {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:    {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -142,7 +142,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'Locks' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -153,7 +153,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'Painting' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -164,7 +164,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'Plumbing' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -175,7 +175,7 @@
             {% for service in most_requested_services %}
                 {% if service.field == 'Water Heaters' %}
                     <div>
-                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }}</li>
+                        <li class="box"> <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">{{service.company.user.username}}</a>:      {{ service.name }} - Requests: {{ service.requests_count }} Rating: {{service.rating}}</li>
                     </div>
                 {% endif %}
             {% endfor %}

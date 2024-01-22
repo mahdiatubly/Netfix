@@ -1,4 +1,5 @@
 from django.db import models
+from star_ratings.models import Rating
 from users.models import Customer, Company, UserBase
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -24,6 +25,15 @@ class Service(models.Model):
     ), default='Air Conditioner')
     requests_count = models.IntegerField(default=0)
 
+    def update_rating(self):
+        completed_requests = Request.objects.filter(service=self, completed=True, rating__isnull=False)
+        total_rating = completed_requests.aggregate(models.Avg('rating'))['rating__avg']
+
+        # Set the average rating for the service
+        self.rating = total_rating if total_rating is not None else 0
+        self.save()
+
+
 class Request(models.Model):
     id = models.AutoField(primary_key=True)
     customer= models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -32,8 +42,18 @@ class Request(models.Model):
     completed = models.BooleanField(default=False)
     rating = models.IntegerField(validators=[MinValueValidator(
         0), MaxValueValidator(5)], null = True, blank = True) 
+    
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.completed and self.rating is not None:
+            self.service.update_rating()
+
+            # Increment the requests_count for the associated service
+            self.service.requests_count = Request.objects.filter(service=self.service, completed=True).count()
+            self.service.save()
+
     def __str__(self):
         return str(self.id)
-
 
 

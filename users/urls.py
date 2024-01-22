@@ -25,5 +25,8 @@ urlpatterns = [
     path('change_password_done/', views.PasswordChangeDoneView.as_view(
         template_name='users/change_password_done.html'
     ), name='change_password_done'),
+    path('rate_service/<int:pk>/', views.RateServiceView.as_view(), name='rate_service'),
+
+
 ]
 

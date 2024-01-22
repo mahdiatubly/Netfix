@@ -1,0 +1,73 @@
+{% load static %}
+
+<!-- Include necessary CSS and JavaScript for the star rating system -->
+<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}" />
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{% static 'star-ratings/js/star-ratings.js' %}"></script>
+
+<div class="modal fade" id="changeRatingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Rate the Service</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="ratingForm">
+          <input type="hidden" name="request_id" id="requestId" value="">
+          <div class="text-center">
+            <h4>Choose a Rating:</h4>
+            <!-- Add the 'rating' class to the input for star rating -->
+            <input id="star-rating" name="rating" type="number" class="rating" data-clearable="remove" data-size="md" data-show-clear="false" data-display-only="false" data-step="1">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Submit Rating</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    // Initialize the star rating
+    $('#star-rating').rating({
+      size: 'md',
+      step: 1,
+      displayOnly: false
+    });
+
+    // When the form is submitted
+    $('#ratingForm').submit(function (event) {
+      event.preventDefault();
+      const request_id = $('#requestId').val();
+      const rating = $('#star-rating').val();
+
+      $.ajax({
+        type: 'POST',
+        url: '/users/rate_request/' + request_id + '/',
+        data: { rating: rating },
+        success: function (data) {
+          if (data.success) {
+            $('#changeRatingModal').modal('hide');
+            // You can add further actions after successfully rating the service
+          }
+        },
+        error: function () {
+          console.log('Error rating the service.');
+        }
+      });
+    });
+
+    // When the modal is shown, update the request ID
+    $('#changeRatingModal').on('show.bs.modal', function (event) {
+      const button = $(event.relatedTarget);
+      const request_id = button.data('request-id');
+      $('#requestId').val(request_id);
+    });
+  });
+</script>

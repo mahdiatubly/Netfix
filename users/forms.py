@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import MinValueValidator
 from datetime import date
 from .models import UserBase, Customer
+from services.models import Request
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import UserChangeForm
 
@@ -64,3 +65,17 @@ class UserProfileUpdateForm(UserBaseUpdateForm, CustomerUpdateForm):
 
     class Meta(UserBaseUpdateForm.Meta, CustomerUpdateForm.Meta):
         fields = UserBaseUpdateForm.Meta.fields + ['date_of_birth', 'logo']
+
+
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Request
+        fields = ['rating']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['rating'].widget = forms.RadioSelect(choices=[
+            (1, '1 Star'), (2, '2 Stars'), (3, '3 Stars'), (4, '4 Stars'), (5, '5 Stars')],
+            attrs={'class': 'rating-stars'}
+        )
