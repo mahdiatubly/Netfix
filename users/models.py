@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import Group, Permission
+from django.core.exceptions import ValidationError
+
+
+
 
 
 
@@ -43,5 +47,13 @@ class Company(models.Model):
                                                      ('Water Heaters', 'Water Heaters')), blank=False, null=False)
     rating = models.IntegerField(
         validators=[MaxValueValidator(5), MinValueValidator(0)], default=0)
+    
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            original_company = Company.objects.get(pk=self.pk)
+            if original_company.field != self.field and self.field != 'All in One':
+                self.service_set.all().delete()
+
+        super().save(*args, **kwargs)
     
 

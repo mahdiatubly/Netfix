@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from services.models import Service, Request
 from .models import Customer, Company, UserBase
-from .forms import SignupForm, CompanySignupForm, UserProfileUpdateForm, CustomerUpdateForm, RatingForm
+from .forms import SignupForm, CompanySignupForm, UserProfileUpdateForm, CompanyProfileUpdateForm, RatingForm
 from datetime import datetime, timedelta
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse
@@ -20,6 +20,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView as BasePasswordChangeView
 from django.contrib.auth.views import PasswordChangeDoneView
+from itertools import groupby
 
 
 
@@ -36,7 +37,9 @@ class Home(generic.ListView):
             .values('id')[:3]
         )
         queryset = Service.objects.filter(id__in=Subquery(subquery)).order_by('field', '-requests_count')
-        return queryset
+        grouped_services = {field: list(group) for field, group in groupby(queryset, key=lambda x: x.field)}
+
+        return grouped_services
     
 class SignupView(UserPassesTestMixin, CreateView):
     model = UserBase
@@ -226,6 +229,36 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
         if 'logo' in self.request.FILES:
             customer.logo = self.request.FILES['logo']
             customer.save()
+
+        return super().form_valid(form)
+    
+class CompanyProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = UserBase
+    form_class = CompanyProfileUpdateForm
+    template_name = 'users/update_company.html'
+    success_url = reverse_lazy('users:company_profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        company = self.object.company
+        form.initial['field'] = company.field
+        form.initial['logo'] = company.logo  
+        form.company_instance = company
+        return form
+
+    def form_valid(self, form):
+        field = form.cleaned_data['field']
+
+        company = form.company_instance
+        company.field = field
+        company.save()
+
+        if 'logo' in self.request.FILES:
+            company.logo = self.request.FILES['logo']
+            company.save()
 
         return super().form_valid(form)
     

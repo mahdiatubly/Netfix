@@ -1,0 +1,109 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Update Customer Profile{% endblock %}
+
+{% block content %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+    .container-box {
+      margin: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header {
+      background-color: #e50914;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #e50914;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .notification-box {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: none; /* Initially hide the notification box */
+    }
+  </style>
+
+  <div class="container-box">
+    <h2>Update Company Profile</h2>
+
+    <!-- Add a notification box -->
+    <div id="notificationBox" class="notification-box"></div>
+
+    <form method="post" enctype="multipart/form-data" id="updateForm">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+        
+        <button type="submit">Update</button>
+    </form>
+  </div>
+
+  <script>
+    // Add confirmation dialog for changing the field
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.getElementById('updateForm');
+      var fieldSelect = form.querySelector('#id_field');
+      var notificationBox = document.getElementById('notificationBox');
+
+      var originalFieldValue = fieldSelect.value;
+
+      fieldSelect.addEventListener('change', function () {
+        var newFieldValue = fieldSelect.value;
+
+        if (newFieldValue !== 'All in One') {
+          var confirmation = confirm("Changing the field to anything other than 'All in One' will lead to the removal of all your services. Are you sure you want to proceed?");
+          
+          if (!confirmation) {
+            // If the user cancels, revert the field back to the original value
+            fieldSelect.value = originalFieldValue;
+            showNotification('Field change canceled.', 'alert-warning');
+          }
+        }
+      });
+
+      // Function to display a notification
+      function showNotification(message, alertClass) {
+        notificationBox.textContent = message;
+        notificationBox.className = 'notification-box alert ' + alertClass;
+        notificationBox.style.display = 'block';
+
+        // Hide the notification after a few seconds (adjust the timeout as needed)
+        setTimeout(function () {
+          notificationBox.style.display = 'none';
+        }, 3000);
+      }
+    });
+  </script>
+{% endblock %}

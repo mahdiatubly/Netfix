@@ -31,7 +31,7 @@
 
         {% if is_company_owner %}
           <!-- Display update company info and link to services management -->
-          <a href="{% url 'services:service_list' %}" class="btn btn-primary mt-3">Update Company Info</a>
+          <a href="{% url 'users:update_company' %}" class="btn btn-primary mt-3">Update Company Proifle</a>
           <a href="{% url 'services:service_list' %}" class="btn btn-success mt-3">Manage Services</a>
         {% endif %}
       </div>

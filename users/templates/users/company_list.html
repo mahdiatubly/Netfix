@@ -10,6 +10,17 @@
         align-items: center;
     }
 
+    img {
+            border-radius: 50%;
+            width: 5%; 
+            height: auto;
+            object-fit: cover;
+    }
+
+    h4 {
+        display: inline-block;
+    }
+
     .company-card {
         border: 1px solid #ccc;
         padding: 20px;
@@ -22,6 +33,7 @@
         color: #333;
         font-weight: bold;
     }
+
 </style>
 
 <div class="container mt-4">
@@ -30,6 +42,7 @@
     {% for company in companies %}
     <div class="card company-card">
         <a href="{% url 'users:public_company_profile' username=company.user.username %}" class="company-link">
+            <img src="{{ MEDIA_URL }}{{ company.logo.url }}" alt="{{ company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
             <h4>{{ company.user.username }} - {{ company.field }}</h4>
         </a>
     </div>

@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import MinValueValidator
 from datetime import date
-from .models import UserBase, Customer
+from .models import UserBase, Customer, Company
 from services.models import Request
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import UserChangeForm
@@ -56,6 +56,36 @@ class CustomerUpdateForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = ['date_of_birth', 'logo']
+
+class CompanyUpdateForm(forms.ModelForm):
+    field = forms.ChoiceField(choices=(('Air Conditioner', 'Air Conditioner'),
+                                                     ('All in One', 'All in One'),
+                                                     ('Carpentry', 'Carpentry'),
+                                                     ('Electricity',
+                                                      'Electricity'),
+                                                     ('Gardening', 'Gardening'),
+                                                     ('Home Machines',
+                                                      'Home Machines'),
+                                                     ('House Keeping',
+                                                      'House Keeping'),
+                                                     ('Interior Design',
+                                                      'Interior Design'),
+                                                     ('Locks', 'Locks'),
+                                                     ('Painting', 'Painting'),
+                                                     ('Plumbing', 'Plumbing'),
+                                                     ('Water Heaters', 'Water Heaters')), widget=forms.Select(attrs={'class': 'form-control'}))
+    logo = forms.ImageField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={'accept': 'image/*'})
+    )
+    class Meta:
+        model = Company
+        fields = ['field', 'logo']
+
+
+class CompanyProfileUpdateForm(UserBaseUpdateForm, CompanyUpdateForm):
+    class Meta(UserBaseUpdateForm.Meta, CustomerUpdateForm.Meta):
+        fields = ['username', 'email'] + ['field', 'logo']
 
 class UserProfileUpdateForm(UserBaseUpdateForm, CustomerUpdateForm):
     logo = forms.ImageField(

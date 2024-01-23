@@ -1,7 +1,8 @@
 from django.db import models
 from star_ratings.models import Rating
-from users.models import Customer, Company, UserBase
+from users.models import Customer, Company
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 
 class Service(models.Model):
     company=models.ForeignKey(Company, on_delete=models.CASCADE)
@@ -23,7 +24,7 @@ class Service(models.Model):
         ('Plumbing', 'Plumbing'),
         ('Water Heaters', 'Water Heaters'),
     ), default='Air Conditioner')
-    requests_count = models.IntegerField(default=0)
+    requests_count = models.IntegerField(default=0)  
 
     def update_rating(self):
         completed_requests = Request.objects.filter(service=self, completed=True, rating__isnull=False)

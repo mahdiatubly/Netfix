@@ -18,6 +18,7 @@ urlpatterns = [
     path('company/list/', views.CompanyListView.as_view(), name='company_list'),
     path('customer/profile/', views.CustomerProfileView.as_view(), name='customer_profile'),
     path('update/customer/', views.UserProfileUpdateView.as_view(), name='update_customer'),
+    path('update/company/', views.CompanyProfileUpdateView.as_view(), name='update_company'),
     path('<int:pk>/password/', auth_views.PasswordChangeView.as_view(
         template_name='users/change_password.html',
         success_url='/users/change_password_done/'  

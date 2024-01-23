@@ -163,7 +163,6 @@ class CompanyRequestsView(View):
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not request.user.is_company:
-            # Redirect or handle unauthorized access as needed
             return render(request, 'users/unauthorized_access.html')
 
         context = self.get_context_data()
