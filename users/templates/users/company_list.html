@@ -1,15 +1,9 @@
 {% extends 'users/base.html' %}
 
+{% load static %}
+
 {% block content %}
 <style>
-    header {
-        background-color: #e50914;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
     img {
         border-radius: 50%;
         width: 5%;
@@ -57,7 +51,7 @@
         cursor: pointer;
     }
 </style>
-
+<link rel="stylesheet" href="{% static 'netfix/css/styles.css' %}">
 <div class="container mt-4">
     <div class="search-box">
         <form method="get" action="{% url 'users:company_search_view' %}">

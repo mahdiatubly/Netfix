@@ -1,0 +1,112 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+header {
+    background-color: #e50914;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.signup_form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.signup_button {
+    background-color: #e50914;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"] {
+    border: none;
+    padding: 8px 15px;
+    background-color: #e50914;
+    color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.user-cat {
+    background-color: #f0f0f0; /* Slightly darker gray than before */
+    width: 100%;
+    padding: 0;
+    text-align: center;
+}
+
+.home-search-box {
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    }
+
+#customer-section {
+    background-color: #f0f0f0;
+    width: 49%;
+    display: inline-block;
+    text-align: center;          
+    margin: 0;
+    margin-left: 0.5%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-top: .5%;
+    padding-bottom: .5%;
+    color: black;
+
+}
+
+#company-section {
+    background-color: #f0f0f0; 
+    width: 49%;
+    display: inline-block;
+    text-align: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-right: 0.5%;
+    padding-top: .5%;
+    padding-bottom: .5%;
+    color: black;
+}
+
+#home_img {
+    border-radius: 50%;
+    width: 50px; 
+    height: 50px;
+    object-fit: cover;
+}

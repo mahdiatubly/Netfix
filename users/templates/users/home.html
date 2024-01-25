@@ -1,7 +1,10 @@
 {% extends 'users/base.html' %}
 
+{% load static %}
+
 {% block content %}
     <head>
+        <link rel="stylesheet" href="{% static 'netfix/css/styles.css' %}">
         <style>
             .box {
                 border: 1px solid #ccc;
@@ -63,12 +66,12 @@
                 object-fit: cover;
             }
 
-            .search-box {
+            /* .home-search-box {
             border-radius: 20px;
             border: 1px solid #ccc;
             padding: 10px;
             margin: 10px;
-            }
+            } */
 
             input[type="text"] {
                 border: none;
@@ -111,17 +114,17 @@
                 margin-bottom: 10px;
             }
 
-            img {
+            /* #home_img {
                 border-radius: 50%;
                 width: 50px; 
                 height: 50px;
                 object-fit: cover;
-            }
+            } */
         </style>
     </head>
     <body>
         <main>
-            <div class="search-box">
+            <div class="home-search-box">
                 <form method="get" action="{% url 'users:search_view' %}">
                     <input type="text" name="query" placeholder="Search...">
                     <input type="hidden" name="template" value="users/home.html">
@@ -136,13 +139,12 @@
                         {% for service in search_results %}
                         <li class="box">
                             <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
-                                <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
+                                <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" id="home_img" class="img-fluid mb-3 rounded-circle">
                                 {{ service.company.user.username }}
                             </a>:
                             <a href="{% url 'services:service_detail' service_id=service.id %}">
                                 {{ service.name }} - Requests: {{ service.requests_count }} - Rating: {{ service.rating }}/5
                             </a>
-                            <div class="rateyo-container" data-rating="{{ service.rating }}"></div>
                         </li>
                         {% endfor %}
                     </ul>
@@ -156,13 +158,12 @@
                         <div>
                             <li class="box">
                                 <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
-                                    <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
+                                    <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" id="home_img" class="img-fluid mb-3 rounded-circle">
                                     {{ service.company.user.username }}
                                 </a>:
                                 <a href="{% url 'services:service_detail' service_id=service.id %}">
                                     {{ service.name }} - Requests: {{ service.requests_count }} - Rating: {{ service.rating }}/5
                                 </a>
-                                <div class="rateyo-container" data-rating="{{ service.rating }}"></div>
                             </li>
                         </div>
                     {% endfor %}
