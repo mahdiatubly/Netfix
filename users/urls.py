@@ -27,7 +27,23 @@ urlpatterns = [
         template_name='users/change_password_done.html'
     ), name='change_password_done'),
     path('rate_service/<int:pk>/', views.RateServiceView.as_view(), name='rate_service'),
+    path('search/', views.SearchView.as_view(), name='search_view'),
+    path('company/search/', views.CompanySearchView.as_view(), name='company_search_view'),
+
+
+
 
 
 ]
+
+
+
+
+
+
+
+
+
+
+
 

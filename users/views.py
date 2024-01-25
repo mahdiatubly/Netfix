@@ -281,6 +281,41 @@ class RateServiceView(View):
             return redirect('users:customer_profile')
         return render(request, self.template_name, {'form': form, 'request_instance': request_instance})
     
+class SearchView(ListView):
+    model = Service
+    context_object_name = 'search_results'
+
+    def get_queryset(self):
+        query = self.request.GET.get('query')
+        if query:
+            return Service.objects.filter(name__icontains=query) | \
+                   Service.objects.filter(field__icontains=query) | \
+                   Service.objects.filter(description__icontains=query)
+        return Service.objects.none()
+
+    def get_template_names(self):
+        # Get the original template name from the request
+        original_template = self.request.GET.get('template', 'users/home.html')
+        
+        # You may want to validate or sanitize the template name here
+        # to prevent potential security issues.
+
+        return [original_template]
+    
+class CompanySearchView(View):
+    template_name = 'users/company_list.html'
+
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('query')
+        if query:
+            companies = Company.objects.filter(user__username__icontains=query) | \
+                        Company.objects.filter(field__icontains=query) 
+        else:
+            companies = Company.objects.all()
+
+        return render(request, self.template_name, {'companies': companies, 'query': query})
+
+    
 
 
 

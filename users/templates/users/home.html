@@ -1,93 +1,173 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
-<head>
-    <style>
-        .box {
+    <head>
+        <style>
+            .box {
+                border: 1px solid #ccc;
+                padding: 20px;
+                margin: 10px;
+                text-align: center;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f8f8f8;
+            }
+
+            header {
+                background-color: #e50914;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            nav ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+            }
+
+            nav li {
+                margin-right: 20px;
+            }
+
+            a {
+                text-decoration: none;
+                color: rgb(15, 12, 12);
+                font-weight: bold;
+            }
+
+            h1 {
+                color: #333;
+                text-align: center;
+            }
+
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+            ul li {
+                margin-bottom: 10px;
+            }
+
+            img {
+                border-radius: 50%;
+                width: 50px; 
+                height: 50px;
+                object-fit: cover;
+            }
+
+            .search-box {
+            border-radius: 20px;
             border: 1px solid #ccc;
-            padding: 20px;
+            padding: 10px;
             margin: 10px;
-            text-align: center;
-        }
+            }
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
-        }
+            input[type="text"] {
+                border: none;
+                width: 80%;
+                padding: 8px;
+                border-radius: 20px;
+            }
 
-        header {
-            background-color: #e50914;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+            input[type="submit"] {
+                border: none;
+                padding: 8px 15px;
+                background-color: #e50914;
+                color: #fff;
+                border-radius: 20px;
+                cursor: pointer;
+            }
 
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
+            .search-results {
+                margin-top: 20px;
+            }
 
-        nav li {
-            margin-right: 20px;
-        }
+            .box {
+                border: 1px solid #ccc;
+                padding: 20px;
+                margin: 10px;
+                text-align: center;
+            }
 
-        a {
-            text-decoration: none;
-            color: rgb(15, 12, 12);
-            font-weight: bold;
-        }
+            h2 {
+                color: #333;
+                margin-bottom: 10px;
+            }
 
-        h1 {
-            color: #333;
-            text-align: center;
-        }
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
+            li {
+                margin-bottom: 10px;
+            }
 
-        ul li {
-            margin-bottom: 10px;
-        }
+            img {
+                border-radius: 50%;
+                width: 50px; 
+                height: 50px;
+                object-fit: cover;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div class="search-box">
+                <form method="get" action="{% url 'users:search_view' %}">
+                    <input type="text" name="query" placeholder="Search...">
+                    <input type="hidden" name="template" value="users/home.html">
+                    <input type="submit" value="Search">
+                </form>
+            </div>
 
-        img {
-            border-radius: 50%;
-            width: 50px; 
-            height: 50px;
-            object-fit: cover;
-        }
-    </style>
-</head>
-<body>
-    <main>
-        <h1>Most Requested Services</h1>
-
-        {% for field, services in most_requested_services.items %}
-            <ul>
-                <h3>{{ field }} Services</h3>
-                {% for service in services %}
-                    <div>
+            {% if search_results %}
+                <div class="search-results">
+                    <h2>Search Results for "{{ request.GET.query }}"</h2>
+                    <ul>
+                        {% for service in search_results %}
                         <li class="box">
                             <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
                                 <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
-                                  {{ service.company.user.username }}
+                                {{ service.company.user.username }}
                             </a>:
                             <a href="{% url 'services:service_detail' service_id=service.id %}">
-                                {{ service.name }} - Requests: {{ service.requests_count }}
+                                {{ service.name }} - Requests: {{ service.requests_count }} - Rating: {{ service.rating }}/5
                             </a>
                             <div class="rateyo-container" data-rating="{{ service.rating }}"></div>
                         </li>
-                    </div>
-                {% endfor %}
-            </ul>
-        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
 
-    </main>
-</body>
+            {% for field, services in most_requested_services.items %}
+                <ul>
+                    <h3>{{ field }} Services</h3>
+                    {% for service in services %}
+                        <div>
+                            <li class="box">
+                                <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
+                                    <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
+                                    {{ service.company.user.username }}
+                                </a>:
+                                <a href="{% url 'services:service_detail' service_id=service.id %}">
+                                    {{ service.name }} - Requests: {{ service.requests_count }} - Rating: {{ service.rating }}/5
+                                </a>
+                                <div class="rateyo-container" data-rating="{{ service.rating }}"></div>
+                            </li>
+                        </div>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </main>
+    </body>
 {% endblock %}

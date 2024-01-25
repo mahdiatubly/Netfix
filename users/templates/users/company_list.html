@@ -11,10 +11,10 @@
     }
 
     img {
-            border-radius: 50%;
-            width: 5%; 
-            height: auto;
-            object-fit: cover;
+        border-radius: 50%;
+        width: 5%;
+        height: auto;
+        object-fit: cover;
     }
 
     h4 {
@@ -34,18 +34,51 @@
         font-weight: bold;
     }
 
+    .search-box {
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    input[type="text"] {
+        border: none;
+        width: 80%;
+        padding: 8px;
+        border-radius: 20px;
+    }
+
+    input[type="submit"] {
+        border: none;
+        padding: 8px 15px;
+        background-color: #e50914;
+        color: #fff;
+        border-radius: 20px;
+        cursor: pointer;
+    }
 </style>
 
 <div class="container mt-4">
+    <div class="search-box">
+        <form method="get" action="{% url 'users:company_search_view' %}">
+            <input type="text" name="query" placeholder="Search...">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+
     <h2 class="mb-4">Service Providers</h2>
 
+    {% if query %}
+        <h3>Search Results for "{{ query }}"</h3>
+    {% endif %}
+
     {% for company in companies %}
-    <div class="card company-card">
-        <a href="{% url 'users:public_company_profile' username=company.user.username %}" class="company-link">
-            <img src="{{ MEDIA_URL }}{{ company.logo.url }}" alt="{{ company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
-            <h4>{{ company.user.username }} - {{ company.field }}</h4>
-        </a>
-    </div>
+        <div class="card company-card">
+            <a href="{% url 'users:public_company_profile' username=company.user.username %}" class="company-link">
+                <img src="{{ MEDIA_URL }}{{ company.logo.url }}" alt="{{ company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
+                <h4>{{ company.user.username }} - {{ company.field }}</h4>
+            </a>
+        </div>
     {% endfor %}
 </div>
 {% endblock %}
