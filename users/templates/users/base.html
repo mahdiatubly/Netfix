@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="{% static 'netfix/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'netfix/css/styles.css' %}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <title>{% block title %}Netfix{% endblock %}</title>
         <style>
@@ -19,7 +19,7 @@
         <header>
             <div>
                 <a href="{% url 'users:home' %}">
-                    <img src="/path/to/netflix_logo.png" alt="Netflix Logo" style="height: 30px; width: auto;">
+                    <img src="{% static 'images/logo.png' %}" alt="Netflix Logo" style="height: 30px; width: auto;">
                 </a>
             </div>
             <nav class="navbar navbar-expand-lg">
@@ -45,7 +45,7 @@
         <header>
             <div>
                 <a href="{% url 'users:home' %}">
-                    <img src="/path/to/netflix_logo.png" alt="Netflix Logo" style="height: 30px; width: auto;">
+                    <img src="{% static 'images/logo.png' %}" alt="Netflix Logo" style="height: 30px; width: auto;">
                 </a>
             </div>
             <nav class="navbar navbar-expand-lg">
@@ -72,7 +72,7 @@
     <header>
         <div>
             <a href="{% url 'users:home' %}">
-                <img src="/path/to/netflix_logo.png" alt="Netflix Logo" style="height: 30px; width: auto;">
+                <img src="{% static 'images/logo.png' %}" alt="Netflix Logo" style="height:5vw; width: auto;">
             </a>
         </div>
         <nav class="navbar navbar-expand-lg">
