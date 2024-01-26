@@ -40,7 +40,7 @@
       display: block;
       margin-top: 10px;
       text-decoration: none;
-      color: #e50914;
+      color: black;
       font-weight: bold;
     }
 
@@ -111,7 +111,8 @@
       {% if active_requests %}
         <ul>
           {% for request in active_requests %}
-            <li>{{ request.service.name }} - Request Date: {{ request.date }}
+            <li>{{ request.service.name }} - Request Date: {{ request.date }} 
+              - Price: {{request.price}}
               <form method="post" action="{% url 'services:mark_request_completed' pk=request.pk %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-success">Mark as Completed</button>
@@ -127,7 +128,7 @@
       {% if previous_requests %}
         <ul>
           {% for request in previous_requests %}
-            <li>{{ request.service.name }} - Request Date: {{ request.date }} - Completed: {% if request.completed %}Yes{% else %}No{% endif %}
+            <li>{{ request.service.name }} - Request Date: {{ request.date }} - Price: {{request.price}} - Completed: {% if request.completed %}Yes{% else %}No{% endif %}
               {% if request.completed and request.rating is None %}
                 <a href="{% url 'users:rate_service' pk=request.pk %}" class="btn btn-warning">Rate Service</a>
               {% endif %}

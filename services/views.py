@@ -130,22 +130,37 @@ class ServiceDetailView(View):
     def post(self, request, *args, **kwargs):
         service_id = kwargs.get('service_id')
         service = get_object_or_404(Service, id=service_id)
+
         if not request.user.is_authenticated:
             messages.warning(request, 'Please sign in to request this service.')
             return redirect('users:signin')
+
         if request.user.is_company:
             messages.warning(request, 'Company accounts cannot request services.')
             return redirect('services:service_detail', service_id=service_id)
+
         customer = get_object_or_404(Customer, user=request.user)
         try:
+            # Retrieve duration from the request
+            duration = request.POST.get('duration', 1)
+
+            # Validate and convert duration to an integer
+            duration = int(duration)
+            if duration < 1:
+                raise ValueError('Duration must be at least 1 hour.')
+
             Request.objects.create(
                 customer=customer,
                 service=service,
-                date=timezone.now()  
+                date=timezone.now(),
+                duration=duration  # Save duration in the Request model
             )
             messages.success(request, 'Request submitted successfully. You will be contacted soon.')
+        except ValueError as ve:
+            messages.warning(request, f'Invalid duration. {str(ve)}')
         except Exception as e:
             messages.warning(request, f'Failed to submit request. Error: {str(e)}')
+
         return redirect('services:service_detail', service_id=service_id)
 
 
@@ -201,4 +216,21 @@ class MarkRequestCompletedView(View):
         if not request.user.is_company:
              return redirect('users:customer_profile')
         return redirect('services:company_requests')
+    
+
+class FieldServicesView(View):
+    template_name = 'services/field_services.html'  
+
+    def get_context_data(self, field, **kwargs):
+        services = Service.objects.filter(field=field) 
+        context = {
+            'field': field,
+            'services': services,
+        }
+        return context
+
+    def get(self, request, *args, **kwargs):
+        field = kwargs.get('field')  # Retrieve the field from the URL
+        context = self.get_context_data(field)
+        return render(request, self.template_name, context)
 

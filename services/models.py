@@ -42,7 +42,8 @@ class Request(models.Model):
     date = models.DateTimeField(auto_now=True, null=False)
     completed = models.BooleanField(default=False)
     rating = models.IntegerField(validators=[MinValueValidator(
-        0), MaxValueValidator(5)], null = True, blank = True) 
+        0), MaxValueValidator(5)], null = True, blank = True)
+    duration = models.IntegerField( default = 1 )
     
     
     def save(self, *args, **kwargs):

@@ -13,6 +13,8 @@ urlpatterns = [
     path('service/<int:service_id>/', views.ServiceDetailView.as_view(), name='service_detail'),
     path('company/requests/', views.CompanyRequestsView.as_view(), name='company_requests'),
     path('mark/request/completed/<int:pk>/', views.MarkRequestCompletedView.as_view(), name='mark_request_completed'),
+    path('services/<str:field>/', views.FieldServicesView.as_view(), name='field_services'),
+
 
 
 

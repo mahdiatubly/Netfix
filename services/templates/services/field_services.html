@@ -113,7 +113,7 @@
             <div class="home-search-box">
                 <form method="get" action="{% url 'users:search_view' %}">
                     <input type="text" name="query" placeholder="Search...">
-                    <input type="hidden" name="template" value="users/home.html">
+                    <input type="hidden" name="template" value="services/field_services.html">
                     <input type="submit" value="Search">
                 </form>
             </div>
@@ -133,28 +133,23 @@
                                 </a>
                             </li>
                         {% endfor %}
-                        <a href="{% url 'services:field_services' field=request.GET.query %}"> All Services</a>
                     </ul>
                 </div>
+            
+            {% else %}
+                <h3>{{ field }} Services</h3>
+                {% for service in services %}
+                    <li class="box">
+                        <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
+                            <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
+                            {{ service.company.user.username }}
+                        </a>:
+                        <a href="{% url 'services:service_detail' service_id=service.id %}">
+                            {{ service.name }} - Requests: {{ service.requests_count }} - Rating: {{ service.rating }}/5
+                        </a>
+                    </li>
+                {% endfor %}
             {% endif %}
-
-            {% for field, services in most_requested_services.items %}
-                <ul>
-                    <h3>{{ field }} Services</h3>
-                    {% for service in services %}
-                        <li class="box">
-                            <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
-                                <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
-                                {{ service.company.user.username }}
-                            </a>:
-                            <a href="{% url 'services:service_detail' service_id=service.id %}">
-                                {{ service.name }} - Requests: {{ service.requests_count }} - Rating: {{ service.rating }}/5
-                            </a>
-                        </li>
-                    {% endfor %}
-                    <a href="{% url 'services:field_services' field=field %}"> All Services</a>
-                </ul>
-            {% endfor %}
         </main>
     </body>
 {% endblock %}

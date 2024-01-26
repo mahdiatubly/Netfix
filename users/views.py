@@ -191,6 +191,12 @@ class CustomerProfileView(View):
         active_requests = Request.objects.filter(customer=customer, completed=False)
         previous_requests = Request.objects.filter(customer=customer, completed=True)
 
+        for request in active_requests:
+            request.price = request.service.price_hour * request.duration
+
+        for request in previous_requests:
+            request.price = request.service.price_hour * request.duration
+
         context = {
             'customer': customer,
             'active_requests': active_requests,

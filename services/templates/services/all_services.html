@@ -66,7 +66,7 @@
                 <a href="{% url 'services:service_detail' service_id=service.id %}">
                     <div class="card service-card">
                         <h4>{{ service.name }}</h4>
-                        <p>{{ service.description }}</p>
+                        <p>{{ service.field }}</p>
                         <p>Price per Hour: ${{ service.price_hour }}</p>
                         {% if service.company %}
                         <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
@@ -82,7 +82,7 @@
             <a href="{% url 'services:service_detail' service_id=service.id %}">
                 <div class="card service-card">
                     <h4>{{ service.name }}</h4>
-                    <p>{{ service.description }}</p>
+                    <p>{{ service.field }}</p>
                     <p>Price per Hour: ${{ service.price_hour }}</p>
                     {% if service.company %}
                     <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
