@@ -14,8 +14,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.utils import timezone
+from django.db.models import OuterRef, Subquery
 from django.contrib import messages
 from django.core.exceptions import ValidationError
+from itertools import groupby
 
 class ControlPanelView(LoginRequiredMixin, View):
     template_name = 'services/control_panel.html'
@@ -108,12 +110,19 @@ class ServiceUpdateView(LoginRequiredMixin, UpdateView):
 class ClientServiceListView(ListView):
     model = Service
     template_name = 'services/all_services.html'
-    context_object_name = 'services'
+    context_object_name = "most_requested_services"
 
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.is_company:
-            return redirect('users:home')
-        return super().get(request, *args, **kwargs)
+    def get_queryset(self):
+        subquery = (
+            Service.objects
+            .filter(field=OuterRef('field'))
+            .order_by('-requests_count')
+            .values('id')
+        )
+        queryset = Service.objects.filter(id__in=Subquery(subquery)).order_by('field', '-requests_count')
+        grouped_services = {field: list(group) for field, group in groupby(queryset, key=lambda x: x.field)}
+
+        return grouped_services
 
 
 class ServiceDetailView(View):
@@ -141,10 +150,7 @@ class ServiceDetailView(View):
 
         customer = get_object_or_404(Customer, user=request.user)
         try:
-            # Retrieve duration from the request
             duration = request.POST.get('duration', 1)
-
-            # Validate and convert duration to an integer
             duration = int(duration)
             if duration < 1:
                 raise ValueError('Duration must be at least 1 hour.')
@@ -153,7 +159,7 @@ class ServiceDetailView(View):
                 customer=customer,
                 service=service,
                 date=timezone.now(),
-                duration=duration  # Save duration in the Request model
+                duration=duration  
             )
             messages.success(request, 'Request submitted successfully. You will be contacted soon.')
         except ValueError as ve:

@@ -3,95 +3,156 @@
 {% load static %}
 
 {% block content %}
-<head>
-    <style>
+    <head>
+        <link rel="stylesheet" href="{% static 'netfix/css/styles.css' %}">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f8f8f8;
+            }
 
-        .service-card {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: 10px;
-            text-align: center;
-        }
+            header {
+                background-color: #e50914;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
-        .service-card {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: 10px;
-            text-align: center;
-        }
+            nav ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+            }
 
-        .search-box {
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin: 10px;
-        }
+            nav li {
+                margin-right: 20px;
+            }
 
-        input[type="text"] {
-            border: none;
-            width: 80%;
-            padding: 8px;
-            border-radius: 20px;
-        }
+            a {
+                text-decoration: none;
+                color: rgb(15, 12, 12);
+                font-weight: bold;
+            }
 
-        input[type="submit"] {
-            border: none;
-            padding: 8px 15px;
-            background-color: #e50914;
-            color: #fff;
-            border-radius: 20px;
-            cursor: pointer;
-        }
+            main {
+                max-width: 800px;
+                margin: 20px auto;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
 
-        .search-results {
-            margin-top: 20px;
-        }
-    </style>
-    <link rel="stylesheet" href="{% static 'netfix/css/styles.css' %}">
-</head>
+            .home-search-box {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #e50914;
+                padding: 10px;
+                border-radius: 20px;
+                margin-bottom: 20px;
+            }
 
-<div class="container mt-4">
-    <div class="search-box">
-        <form method="get" action="{% url 'users:search_view' %}">
-            <input type="hidden" name="template" value="services/all_services.html">
-            <input type="text" name="query" placeholder="Search...">
-            <input type="submit" value="Search">
-        </form>
-    </div>
+            input[type="text"] {
+                border: none;
+                width: 70%;
+                padding: 10px;
+                border-radius: 20px;
+            }
 
-    {% if search_results %}
-        <div class="search-results">
-            <h2>Search Results for "{{ request.GET.query }}"</h2>
-            {% for service in search_results %}
-                <a href="{% url 'services:service_detail' service_id=service.id %}">
-                    <div class="card service-card">
-                        <h4>{{ service.name }}</h4>
-                        <p>{{ service.field }}</p>
-                        <p>Price per Hour: ${{ service.price_hour }}</p>
-                        {% if service.company %}
-                        <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
-                            <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" id="home_img" class="img-fluid mb-3 rounded-circle">                            {{ service.company.user.username }}
-                        </a>
-                        {% endif %}
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
-    {% else %}
-        {% for service in services %}
-            <a href="{% url 'services:service_detail' service_id=service.id %}">
-                <div class="card service-card">
-                    <h4>{{ service.name }}</h4>
-                    <p>{{ service.field }}</p>
-                    <p>Price per Hour: ${{ service.price_hour }}</p>
-                    {% if service.company %}
-                    <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
-                        <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" id="home_img" class="img-fluid mb-3 rounded-circle">                        {{ service.company.user.username }}
-                    </a>
-                    {% endif %}
+            input[type="submit"] {
+                border: none;
+                padding: 10px 20px;
+                background-color: #fff;
+                color: #e50914;
+                border-radius: 20px;
+                cursor: pointer;
+            }
+
+            .search-results {
+                margin-top: 20px;
+            }
+
+            .box {
+                border: 1px solid #ccc;
+                padding: 20px;
+                margin: 10px 0;
+                text-align: center;
+                border-radius: 10px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            }
+
+            h2 {
+                color: #333;
+                margin-bottom: 10px;
+            }
+
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+            li {
+                margin-bottom: 10px;
+            }
+
+            img {
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                object-fit: cover;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div class="home-search-box">
+                <form method="get" action="{% url 'users:search_view' %}">
+                    <input type="text" name="query" placeholder="Search...">
+                    <input type="hidden" name="template" value="users/home.html">
+                    <input type="submit" value="Search">
+                </form>
+            </div>
+
+            {% if search_results %}
+                <div class="search-results">
+                    <h2>Search Results for "{{ request.GET.query }}"</h2>
+                    <ul>
+                        {% for service in search_results %}
+                            <li class="box">
+                                <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
+                                    <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
+                                    {{ service.company.user.username }}
+                                </a>:
+                                <a href="{% url 'services:service_detail' service_id=service.id %}">
+                                    {{ service.name }} - Requests: {{ service.requests_count }} - Rating: {{ service.rating }}/5
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
-            </a>
-        {% endfor %}
-    {% endif %}
-</div>
+            {% endif %}
+
+            {% for field, services in most_requested_services.items %}
+                <ul>
+                    <h3>{{ field }} Services</h3>
+                    {% for service in services %}
+                        <li class="box">
+                            <a href="{% url 'users:public_company_profile' username=service.company.user.username %}">
+                                <img src="{{ MEDIA_URL }}{{ service.company.logo.url }}" alt="{{ service.company.user.username }} Logo" class="img-fluid mb-3 rounded-circle">
+                                {{ service.company.user.username }}
+                            </a>:
+                            <a href="{% url 'services:service_detail' service_id=service.id %}">
+                                {{ service.name }} - Requests: {{ service.requests_count }} - Rating: {{ service.rating }}/5
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </main>
+    </body>
 {% endblock %}
