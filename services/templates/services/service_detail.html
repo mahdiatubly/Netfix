@@ -24,14 +24,42 @@
     .request-btn {
         margin-top: 10px;
     }
+
+    .rating-container {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .star {
+        color: #FFD700; /* Set star color to gold */
+        font-size: 24px; /* Adjust the size of the stars */
+        margin: 0 2px; /* Adjust the space between stars */
+    }
+
+    .empty-star {
+        color: #ccc; /* Set empty star color to gray */
+        font-size: 24px; /* Adjust the size of the stars */
+        margin: 0 2px; /* Adjust the space between stars */
+    }
 </style>
 
 <div class="container mt-4">
     <h2>{{ service.name }} Details</h2>
 
     <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h4>{{ service.name }} - {{ service.field }}</h4>
+        <div class="card-header bg-danger text-white">
+            <h4>{{ service.name }} - {{ service.field }}</h4> 
+            <div class="rating-container">
+                {% for _ in stars %}
+                    <span class="star">★</span>
+                {% endfor %}
+                {% for _ in empty_stars %}
+                    <span class="empty-star">★</span>
+                {% endfor %}
+                ({{ service.requests_count }})
+            </div>
         </div>
         <div class="card-body">
             {% if messages %}
@@ -42,8 +70,6 @@
                 </ul>
             {% endif %}
 
-            <!-- Display service details -->
-            <!-- <img src="{{ MEDIA_URL }}{{ service.image.url }}" alt="{{ service.name }} Image" class="img-fluid mb-3"> -->
             <p>{{ service.description }}</p>
             <p>Price per Hour: ${{ service.price_hour }}</p>
 
@@ -71,7 +97,6 @@
                                 <p>Are you sure you want to request the service "{{ service.name }}"?</p>
                                 <form method="post" action="{% url 'services:service_detail' service_id=service.id %}">
                                     {% csrf_token %}
-                                    <!-- Add Bootstrap classes for styling -->
                                     <div class="form-group">
                                         <label for="duration">Duration (hours):</label>
                                         <input type="number" class="form-control" id="duration" name="duration" min="1" value="1" required>

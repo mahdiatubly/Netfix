@@ -34,7 +34,7 @@
 
             a {
                 text-decoration: none;
-                color: rgb(15, 12, 12);
+                color: black;
                 font-weight: bold;
             }
 
@@ -129,7 +129,7 @@
                                     {{ service.company.user.username }}
                                 </a>:
                                 <a href="{% url 'services:service_detail' service_id=service.id %}">
-                                    {{ service.name }} - Requests: {{ service.requests_count }} - Rating: {{ service.rating }}/5
+                                    {{ service.name }} - Requests: {{ service.requests_count }}
                                 </a>
                             </li>
                         {% endfor %}
@@ -147,7 +147,7 @@
                                 {{ service.company.user.username }}
                             </a>:
                             <a href="{% url 'services:service_detail' service_id=service.id %}">
-                                {{ service.name }} - Requests: {{ service.requests_count }} - Rating: {{ service.rating }}/5
+                                {{ service.name }} - Requests: {{ service.requests_count }}
                             </a>
                         </li>
                     {% endfor %}

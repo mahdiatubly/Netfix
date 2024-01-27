@@ -92,7 +92,7 @@
       <ul class="list-group">
         {% for service in competitor_services %}
           <li class="list-group-item">
-            {{ service.name }} - {{ service.description }} - {{ service.price_hour }}
+            <a href="{% url 'services:service_detail' service_id=service.id%}">{{ service.name }}</a>- {{ service.description }} - {{ service.price_hour }}
           </li>
         {% endfor %}
       </ul>

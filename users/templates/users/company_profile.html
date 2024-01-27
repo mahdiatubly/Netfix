@@ -1,5 +1,7 @@
 {% extends 'users/base.html' %}
 
+{% load static %}
+
 {% block content %}
 <style>
     header {
@@ -10,6 +12,8 @@
         align-items: center;
     }
 </style>
+<link rel="stylesheet" href="{% static 'netfix/css/styles.css' %}">
+
 
   <div class="container mt-4">
     <h2 class="mb-4">Company Profile</h2>

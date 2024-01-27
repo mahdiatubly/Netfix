@@ -131,8 +131,15 @@ class ServiceDetailView(View):
     def get(self, request, *args, **kwargs):
         service_id = kwargs.get('service_id')
         service = get_object_or_404(Service, id=service_id)
+
+        # Prepare stars and empty stars for the template
+        stars = range(service.rating)
+        empty_stars = range(5 - service.rating)
+
         context = {
             'service': service,
+            'stars': stars,
+            'empty_stars': empty_stars,
         }
         return render(request, self.template_name, context)
 

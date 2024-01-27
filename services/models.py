@@ -10,7 +10,7 @@ class Service(models.Model):
     description = models.TextField()
     price_hour = models.DecimalField(decimal_places=2, max_digits=100)
     rating = models.IntegerField(validators=[MinValueValidator(
-        0), MaxValueValidator(5)], null = True, blank = True)
+        0), MaxValueValidator(5)], default=0)
     field = models.CharField(max_length=70, choices=(
         ('Air Conditioner', 'Air Conditioner'),
         ('Carpentry', 'Carpentry'),
@@ -33,6 +33,14 @@ class Service(models.Model):
         # Set the average rating for the service
         self.rating = total_rating if total_rating is not None else 0
         self.save()
+
+    @property
+    def stars(self):
+        return range(self.rating)
+
+    @property
+    def empty_stars(self):
+        return range(5 - self.rating)
 
 
 class Request(models.Model):

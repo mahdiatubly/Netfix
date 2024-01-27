@@ -1,5 +1,7 @@
 {% extends 'users/base.html' %}
 
+{% load static %}
+
 {% block content %}
   <style>
     body {
@@ -101,7 +103,7 @@
       color: #fff;
     }
   </style>
-
+  <link rel="stylesheet" href="{% static 'netfix/css/styles.css' %}">
   <div class="container">
     <h2>Company Services</h2>
 
