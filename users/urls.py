@@ -30,10 +30,6 @@ urlpatterns = [
     path('search/', views.SearchView.as_view(), name='search_view'),
     path('company/search/', views.CompanySearchView.as_view(), name='company_search_view'),
 
-
-
-
-
 ]
 
 

@@ -4,11 +4,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import ValidationError
 
-
-
-
-
-
 class UserBase(AbstractUser):
     email = models.CharField(unique=True) 
     def save(self, *args, **kwargs):
@@ -22,7 +17,7 @@ class UserBase(AbstractUser):
 class Customer(models.Model):
     user = models.OneToOneField(UserBase, on_delete=models.CASCADE, primary_key=True)
     date_of_birth = models.DateField(null=False)
-    logo = models.ImageField(upload_to='customer_pictures/', default='Customer_profile.webp')
+    logo = models.ImageField(upload_to='customer_pictures/', default='customer_pictures/customer_profile.webp')
 
 
 class Company(models.Model):
@@ -49,11 +44,16 @@ class Company(models.Model):
         validators=[MaxValueValidator(5), MinValueValidator(0)], default=0)
     
     def save(self, *args, **kwargs):
-        if self.pk is not None:
+        try:
             original_company = Company.objects.get(pk=self.pk)
-            if original_company.field != self.field and self.field != 'All in One':
-                self.service_set.all().delete()
+        except Company.DoesNotExist:
+            # Company does not exist in the database, so there's nothing to compare or delete
+            super(Company, self).save(*args, **kwargs)
+            return
 
-        super().save(*args, **kwargs)
+        if original_company.field != self.field and self.field != 'All in One':
+            self.service_set.all().delete()
+
+        super(Company, self).save(*args, **kwargs)
     
 

@@ -29,19 +29,8 @@ class Service(models.Model):
     def update_rating(self):
         completed_requests = Request.objects.filter(service=self, completed=True, rating__isnull=False)
         total_rating = completed_requests.aggregate(models.Avg('rating'))['rating__avg']
-
-        # Set the average rating for the service
         self.rating = total_rating if total_rating is not None else 0
         self.save()
-
-    @property
-    def stars(self):
-        return range(self.rating)
-
-    @property
-    def empty_stars(self):
-        return range(5 - self.rating)
-
 
 class Request(models.Model):
     id = models.AutoField(primary_key=True)
@@ -58,8 +47,6 @@ class Request(models.Model):
         super().save(*args, **kwargs)
         if self.completed and self.rating is not None:
             self.service.update_rating()
-
-            # Increment the requests_count for the associated service
             self.service.requests_count = Request.objects.filter(service=self.service, completed=True).count()
             self.service.save()
 
