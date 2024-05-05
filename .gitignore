@@ -6,7 +6,7 @@
 
 *.sqlite3
 
-*node_modules/
+*node_modules/*
 
 *.DS_Store
 
@@ -17,3 +17,5 @@
 *.war
 
 *.jar
+
+media/*
